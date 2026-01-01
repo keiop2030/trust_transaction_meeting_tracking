@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Trusts - Trust Tracker{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2>All Trusts</h2>
+    <a href="{{ url_for('add_trust') }}" class="btn btn-primary">Add New Trust</a>
+</div>
+
+<div class="trusts-grid">
+    {% if trusts %}
+        {% for trust in trusts %}
+        <div class="trust-card">
+            <h3>{{ trust['name'] }}</h3>
+            <p class="trustee-info"><strong>Trustee:</strong> {{ trust['trustee_name'] }}</p>
+            {% if trust['date_established'] %}
+            <p><strong>Established:</strong> {{ trust['date_established'] }}</p>
+            {% endif %}
+            {% if trust['description'] %}
+            <p class="description">{{ trust['description'] }}</p>
+            {% endif %}
+            <a href="{{ url_for('trust_detail', trust_id=trust['id']) }}" class="btn btn-secondary">View Details</a>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="empty-state">
+            <p>No trusts found. <a href="{{ url_for('add_trust') }}">Add your first trust</a>.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
