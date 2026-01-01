@@ -208,6 +208,20 @@
         </nav>
     </div>
     {% endif %}
+    <title>{% block title %}Trust Tracker{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <h1 class="logo">Trust Tracker</h1>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('index') }}">Trusts</a></li>
+                <li><a href="{{ url_for('transactions') }}">Transactions</a></li>
+                <li><a href="{{ url_for('meetings') }}">Meetings</a></li>
+            </ul>
+        </div>
+    </nav>
     
     <div class="container">
         {% with messages = get_flashed_messages(with_categories=true) %}
@@ -215,6 +229,7 @@
                 <div class="flash-messages">
                     {% for category, message in messages %}
                         <div class="alert alert-{{ category }}">{{ message }}</div>
+                        <div class="flash-message flash-{{ category }}">{{ message }}</div>
                     {% endfor %}
                 </div>
             {% endif %}
@@ -222,5 +237,11 @@
         
         {% block content %}{% endblock %}
     </div>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Trust Transaction Meeting Tracker. All rights reserved.</p>
+        </div>
+    </footer>
 </body>
 </html>

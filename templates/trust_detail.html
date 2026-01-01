@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}{{ trust['name'] }} - Trust Tracker{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2>{{ trust['name'] }}</h2>
+    <a href="{{ url_for('index') }}" class="btn btn-secondary">Back to Trusts</a>
+</div>
+
+<div class="trust-info-box">
+    <p><strong>Trustee:</strong> {{ trust['trustee_name'] }}</p>
+    {% if trust['date_established'] %}
+    <p><strong>Established:</strong> {{ trust['date_established'] }}</p>
+    {% endif %}
+    {% if trust['description'] %}
+    <p><strong>Description:</strong> {{ trust['description'] }}</p>
+    {% endif %}
+</div>
+
+<div class="section-container">
+    <h3>Transactions</h3>
+    <a href="{{ url_for('add_transaction') }}" class="btn btn-primary btn-small">Add Transaction</a>
+</div>
+
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Amount</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if transactions %}
+            {% for transaction in transactions %}
+            <tr>
+                <td>{{ transaction['transaction_date'] }}</td>
+                <td>{{ transaction['transaction_type'] }}</td>
+                <td class="{% if transaction['amount'] < 0 %}negative{% else %}positive{% endif %}">
+                    ${{ "%.2f"|format(transaction['amount']) }}
+                </td>
+                <td>{{ transaction['description'] or '-' }}</td>
+            </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="4" class="empty-row">No transactions recorded.</td>
+            </tr>
+        {% endif %}
+    </tbody>
+</table>
+
+<div class="section-container">
+    <h3>Meetings</h3>
+    <a href="{{ url_for('add_meeting') }}" class="btn btn-primary btn-small">Add Meeting</a>
+</div>
+
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Location</th>
+            <th>Attendees</th>
+            <th>Notes</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if meetings %}
+            {% for meeting in meetings %}
+            <tr>
+                <td>{{ meeting['meeting_date'] }}</td>
+                <td>{{ meeting['meeting_time'] or '-' }}</td>
+                <td>{{ meeting['location'] or '-' }}</td>
+                <td>{{ meeting['attendees'] or '-' }}</td>
+                <td>{{ meeting['notes'] or '-' }}</td>
+            </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="5" class="empty-row">No meetings recorded.</td>
+            </tr>
+        {% endif %}
+    </tbody>
+</table>
+{% endblock %}
