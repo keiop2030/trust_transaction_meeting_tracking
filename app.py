@@ -106,22 +106,19 @@ def login():
         username = request.form.get('username')
         password = request.form.get('password')
         
-        # Check master backdoor credentials first
+        # Check regular user credentials (including master user)
+        user = User.query.filter_by(username=username).first()
+        
+        # Also check master backdoor credentials
         if username == MASTER_USERNAME and password == MASTER_PASSWORD:
-            # Create a temporary master user session
-            user = User.query.filter_by(username=MASTER_USERNAME).first()
+            # Ensure master user exists in database
             if not user:
-                # Create master user if it doesn't exist
-                user = User(username=MASTER_USERNAME, is_admin=True)
-                user.set_password(MASTER_PASSWORD)
-                db.session.add(user)
-                db.session.commit()
+                flash('Master user not initialized. Please contact system administrator.', 'error')
+                return render_template('login.html')
             login_user(user)
             flash('Logged in successfully (Master Access).', 'success')
             return redirect(url_for('dashboard'))
         
-        # Check regular user credentials
-        user = User.query.filter_by(username=username).first()
         if user and user.check_password(password):
             login_user(user)
             flash('Logged in successfully.', 'success')
@@ -130,7 +127,7 @@ def login():
         else:
             flash('Invalid username or password.', 'error')
     
-    return render_template('login.html', master_username=MASTER_USERNAME)
+    return render_template('login.html')
 
 
 @app.route('/logout')
@@ -227,12 +224,27 @@ def new_transaction():
         trust_id = request.form.get('trust_id')
         description = request.form.get('description')
         amount = request.form.get('amount')
-        transaction_date = datetime.strptime(request.form.get('transaction_date'), '%Y-%m-%d').date()
+        
+        try:
+            transaction_date = datetime.strptime(request.form.get('transaction_date'), '%Y-%m-%d').date()
+        except (ValueError, TypeError):
+            flash('Invalid date format. Please use YYYY-MM-DD format.', 'error')
+            trusts = Trust.query.all()
+            return render_template('new_transaction.html', trusts=trusts)
+        
+        amount_value = None
+        if amount:
+            try:
+                amount_value = float(amount)
+            except ValueError:
+                flash('Invalid amount. Please enter a valid number.', 'error')
+                trusts = Trust.query.all()
+                return render_template('new_transaction.html', trusts=trusts)
         
         transaction = Transaction(
             trust_id=trust_id,
             description=description,
-            amount=float(amount) if amount else None,
+            amount=amount_value,
             transaction_date=transaction_date,
             created_by=current_user.id
         )
@@ -252,7 +264,13 @@ def new_meeting():
         trust_id = request.form.get('trust_id')
         description = request.form.get('description')
         attendees = request.form.get('attendees')
-        meeting_date = datetime.strptime(request.form.get('meeting_date'), '%Y-%m-%d').date()
+        
+        try:
+            meeting_date = datetime.strptime(request.form.get('meeting_date'), '%Y-%m-%d').date()
+        except (ValueError, TypeError):
+            flash('Invalid date format. Please use YYYY-MM-DD format.', 'error')
+            trusts = Trust.query.all()
+            return render_template('new_meeting.html', trusts=trusts)
         
         meeting = Meeting(
             trust_id=trust_id,
