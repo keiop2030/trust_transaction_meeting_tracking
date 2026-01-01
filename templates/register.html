@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Register User - Trust Transaction Tracker{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 600px; margin: 2rem auto;">
+    <h2 style="margin-bottom: 1.5rem;">Register New User</h2>
+    
+    <form method="POST" action="{{ url_for('register') }}">
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" required autofocus>
+        </div>
+        
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        
+        <div class="form-group checkbox-group">
+            <input type="checkbox" id="is_admin" name="is_admin">
+            <label for="is_admin" style="margin-bottom: 0;">Administrator</label>
+        </div>
+        
+        <div style="display: flex; gap: 1rem;">
+            <button type="submit" class="btn btn-success">Register User</button>
+            <a href="{{ url_for('user_management') }}" class="btn" style="background-color: #95a5a6; color: white;">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

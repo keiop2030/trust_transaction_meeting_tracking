@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}New Meeting - Trust Transaction Tracker{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 600px; margin: 2rem auto;">
+    <h2 style="margin-bottom: 1.5rem;">Log Meeting</h2>
+    
+    <form method="POST" action="{{ url_for('new_meeting') }}">
+        <div class="form-group">
+            <label for="trust_id">Trust</label>
+            <select id="trust_id" name="trust_id" required>
+                <option value="">Select a trust...</option>
+                {% for trust in trusts %}
+                <option value="{{ trust.id }}">{{ trust.name }} ({{ trust.trustee }})</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" name="description" rows="4" required></textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="attendees">Attendees (optional)</label>
+            <textarea id="attendees" name="attendees" rows="2" placeholder="List of attendees"></textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="meeting_date">Meeting Date</label>
+            <input type="date" id="meeting_date" name="meeting_date" required>
+        </div>
+        
+        <div style="display: flex; gap: 1rem;">
+            <button type="submit" class="btn btn-success">Log Meeting</button>
+            <a href="{{ url_for('dashboard') }}" class="btn" style="background-color: #95a5a6; color: white;">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
