@@ -55,6 +55,12 @@ http://localhost:5000
    - Add and view financial transactions
    - Add and view meeting records
 
+**Note for Production:** Set the `SECRET_KEY` environment variable to a secure random value before deploying to production:
+```bash
+export SECRET_KEY='your-secure-random-secret-key'
+python app.py
+```
+
 ## Database Schema
 
 ### Trusts Table

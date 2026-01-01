@@ -5,9 +5,10 @@ A Flask-based web application for trustees to manage trusts, transactions, and m
 from flask import Flask, render_template, request, redirect, url_for, flash
 import sqlite3
 from datetime import datetime
+import os
 
 app = Flask(__name__)
-app.secret_key = 'trust_tracker_secret_key_2024'
+app.secret_key = os.environ.get('SECRET_KEY', 'dev_secret_key_change_in_production')
 DB_NAME = 'trust_tracker.db'
 
 def get_db_connection():
@@ -106,10 +107,16 @@ def add_transaction():
             flash('All required fields must be filled!', 'error')
             return redirect(url_for('add_transaction'))
         
+        try:
+            amount_float = float(amount)
+        except (ValueError, TypeError):
+            flash('Invalid amount. Please enter a valid number.', 'error')
+            return redirect(url_for('add_transaction'))
+        
         conn = get_db_connection()
         conn.execute(
             'INSERT INTO transactions (trust_id, transaction_date, amount, transaction_type, description) VALUES (?, ?, ?, ?, ?)',
-            (trust_id, transaction_date, float(amount), transaction_type, description)
+            (trust_id, transaction_date, amount_float, transaction_type, description)
         )
         conn.commit()
         conn.close()
