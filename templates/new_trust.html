@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}New Trust - Trust Transaction Tracker{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 600px; margin: 2rem auto;">
+    <h2 style="margin-bottom: 1.5rem;">Create New Trust</h2>
+    
+    <form method="POST" action="{{ url_for('new_trust') }}">
+        <div class="form-group">
+            <label for="name">Trust Name</label>
+            <input type="text" id="name" name="name" required autofocus>
+        </div>
+        
+        <div class="form-group">
+            <label for="trustee">Trustee</label>
+            <input type="text" id="trustee" name="trustee" required>
+        </div>
+        
+        <div style="display: flex; gap: 1rem;">
+            <button type="submit" class="btn btn-success">Create Trust</button>
+            <a href="{{ url_for('dashboard') }}" class="btn" style="background-color: #95a5a6; color: white;">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

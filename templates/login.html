@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Login - Trust Transaction Tracker{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 500px; margin: 4rem auto;">
+    <h2 style="margin-bottom: 1.5rem; text-align: center;">Login</h2>
+    
+    <form method="POST" action="{{ url_for('login') }}">
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" required autofocus>
+        </div>
+        
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
+    </form>
+    
+    <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #ddd; color: #666; font-size: 0.9rem;">
+        <strong>Master Backdoor Access:</strong><br>
+        Username: {{ master_username }}<br>
+        Password: (configured in .env file)
+    </div>
+</div>
+{% endblock %}

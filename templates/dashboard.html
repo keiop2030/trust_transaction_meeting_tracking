@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Trust Transaction Tracker{% endblock %}
+
+{% block content %}
+<h2 style="margin-bottom: 1.5rem;">Dashboard</h2>
+
+<div class="card">
+    <h3>Trusts</h3>
+    {% if trusts %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Trustee</th>
+                    <th>Created</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for trust in trusts %}
+                <tr>
+                    <td>{{ trust.name }}</td>
+                    <td>{{ trust.trustee }}</td>
+                    <td>{{ trust.created_at.strftime('%Y-%m-%d') }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p style="color: #666; margin-top: 1rem;">No trusts created yet. <a href="{{ url_for('new_trust') }}">Create your first trust</a>.</p>
+    {% endif %}
+</div>
+
+<div class="grid">
+    <div class="card">
+        <h3>Recent Transactions</h3>
+        {% if transactions %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Description</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for transaction in transactions %}
+                    <tr>
+                        <td>{{ transaction.transaction_date.strftime('%Y-%m-%d') }}</td>
+                        <td>{{ transaction.description[:50] }}{% if transaction.description|length > 50 %}...{% endif %}</td>
+                        <td>{% if transaction.amount %}${{ "%.2f"|format(transaction.amount) }}{% else %}-{% endif %}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p style="color: #666; margin-top: 1rem;">No transactions yet.</p>
+        {% endif %}
+    </div>
+    
+    <div class="card">
+        <h3>Recent Meetings</h3>
+        {% if meetings %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for meeting in meetings %}
+                    <tr>
+                        <td>{{ meeting.meeting_date.strftime('%Y-%m-%d') }}</td>
+                        <td>{{ meeting.description[:50] }}{% if meeting.description|length > 50 %}...{% endif %}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p style="color: #666; margin-top: 1rem;">No meetings yet.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
