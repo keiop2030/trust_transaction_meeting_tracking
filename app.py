@@ -305,4 +305,7 @@ def init_db():
 
 if __name__ == '__main__':
     init_db()
-    app.run(debug=True)
+    # Debug mode is enabled for development only
+    # Set to False in production or use environment variables
+    debug_mode = os.getenv('FLASK_DEBUG', 'False').lower() in ('true', '1', 'yes')
+    app.run(debug=debug_mode)

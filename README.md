@@ -107,6 +107,18 @@ For emergency access, use the master credentials configured in your `.env` file:
 - Master backdoor credentials stored in environment variables (not in code)
 - CSRF protection through Flask's built-in security features
 
+## Production Deployment
+
+**IMPORTANT**: Before deploying to production, make sure to:
+
+1. Set `FLASK_DEBUG=False` in your `.env` file
+2. Change `SECRET_KEY` to a strong random value (use `python -c "import secrets; print(secrets.token_hex(32))"`)
+3. Change `MASTER_PASSWORD` to a strong, unique password
+4. Use a production-grade database (PostgreSQL, MySQL) instead of SQLite
+5. Set up HTTPS/SSL for secure connections
+6. Use a production WSGI server (e.g., Gunicorn, uWSGI) instead of Flask's development server
+7. Consider additional security measures like rate limiting and IP whitelisting
+
 ## Database
 
 The application uses SQLite by default, stored in `trust_tracker.db`. The database is automatically initialized on first run.
