@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Add Trust - Trust Tracker{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2>Add New Trust</h2>
+    <a href="{{ url_for('index') }}" class="btn btn-secondary">Back to Trusts</a>
+</div>
+
+<form method="POST" class="form-container">
+    <div class="form-group">
+        <label for="name">Trust Name *</label>
+        <input type="text" id="name" name="name" required>
+    </div>
+    
+    <div class="form-group">
+        <label for="trustee_name">Trustee Name *</label>
+        <input type="text" id="trustee_name" name="trustee_name" required>
+    </div>
+    
+    <div class="form-group">
+        <label for="date_established">Date Established</label>
+        <input type="date" id="date_established" name="date_established">
+    </div>
+    
+    <div class="form-group">
+        <label for="description">Description</label>
+        <textarea id="description" name="description" rows="4"></textarea>
+    </div>
+    
+    <button type="submit" class="btn btn-primary">Add Trust</button>
+</form>
+{% endblock %}
