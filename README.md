@@ -55,11 +55,21 @@ http://localhost:5000
    - Add and view financial transactions
    - Add and view meeting records
 
-**Note for Production:** Set the `SECRET_KEY` environment variable to a secure random value before deploying to production:
+### Development vs Production
+
+**Development Mode:** To enable debug mode during development:
+```bash
+export FLASK_DEBUG=true
+python app.py
+```
+
+**Production Deployment:** Set the `SECRET_KEY` environment variable to a secure random value:
 ```bash
 export SECRET_KEY='your-secure-random-secret-key'
 python app.py
 ```
+
+**Note:** Debug mode is disabled by default for security. Never enable debug mode in production.
 
 ## Database Schema
 
